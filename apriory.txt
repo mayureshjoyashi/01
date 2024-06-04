@@ -1,0 +1,34 @@
+pip install apyori
+import numpy as np
+import pandas as pd
+from apyori import apriori
+df = pd.read_csv("/content/GroceryStoreDataSet.csv",encoding='latin-1')
+df.head()
+df.rename(columns = {'MILK,BREAD,BISCUIT':'PRODUCTS'},inplace=True)
+list_i = list(df["PRODUCTS"].apply(lambda x:x.split(',')))
+list_i
+from mlxtend.preprocessing import TransactionEncoder
+encode = TransactionEncoder()
+encode_data = encode.fit(list_i).transform(list_i)
+df = pd.DataFrame(encode_data,columns=encode.columns_)
+df.head()
+association_rules =apriori(list_i,min_support=0.0045,min_confidence=0.2,min_lift=3,min_length=2)
+association_list = list(association_rules)
+for i in range(0,len(association_list)):
+
+
+  print(association_list[i][0])
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori,association_rules
+df = pd.read_csv("GroceryStoreDataSet.csv",names =
+['transaction'],sep=',')
+df = list(df["transaction"].apply(lambda x:x.split(",")))
+print(df)
+one_hot_transformer = TransactionEncoder()
+df_transform=one_hot_transformer.fit_transform(df)
+df=pd.DataFrame(df_transform,columns=one_hot_transformer.columns_)
+df = apriori(df,min_support=0.2, use_colnames = True)
+df.sort_values(['support'],ascending=False,inplace=True)
+df_ar=association_rules(df,metric="lift",min_threshold=1)
+df_ar

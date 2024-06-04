@@ -1,0 +1,36 @@
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+df=pd.read_csv('/content/sample_data/birthweight.csv')
+print(df.head())
+df.describe
+correlation = df['AGE'].corr(df['LWT'])
+print(correlation)
+age=df['AGE']
+age=age.to_numpy()
+print(age)
+weight=df['LWT']
+weight=weight.to_numpy()
+print(weight)
+import matplotlib.pyplot as plt
+corr=np.corrcoef(age,weight)
+plt.scatter(age,weight/1000,c='r')
+plt.xlabel('age')
+plt.ylabel('birthweight')
+lwt=df['LWT']
+bwt=df['BWT']
+corr=np.corrcoef(lwt,bwt)
+plt.scatter(lwt,bwt/1000,c='r')
+plt.xlabel('age')
+plt.ylabel('birthweight')
+lr=LinearRegression()
+age=age.to_numpy()
+age=age.reshape((-1,1))
+lr.fit(age,weight)
+y=lr.predict(age)
+print("coefficent",lr.coef_[0])
+print("intercept",lr.intercept_)
+lr.fit(age,bwt)
+y=lr.predict(age)
+print("coefficent",lr.coef_[0])
+print("intercept",lr.intercept_)
